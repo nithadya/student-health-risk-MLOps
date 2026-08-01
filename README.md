@@ -24,6 +24,18 @@ An Enterprise-Grade, End-to-End Machine Learning System engineered for the **Kag
 
 ---
 
+## 📚 Documentation Hub
+This repository contains extensive documentation covering the academic, architectural, and operational aspects of the system. Please refer to the following guides in the `docs/` directory:
+
+- 🎓 **[CIS6005 Computational Intelligence Final Report](docs/CIS6005_COMPUTATIONAL_INTELLIGENCE_FINAL_REPORT.md)** - The official 4000-word university assessment report containing full critical analysis and methodology.
+- 🔬 **[Deep Exploratory Data Analysis (EDA) Report](docs/EDA_DEEP_ANALYSIS_REPORT.md)** - A comprehensive breakdown of missingness topology, outlier bounding, and non-linear target mapping.
+- 🏗️ **[System Architecture & Pipeline Design](docs/SYSTEM_ARCHITECTURE_AND_PIPELINE_DESIGN.md)** - Detailed system design diagrams and structural reasoning.
+- 💻 **[System Execution & Pipeline Guide](docs/SYSTEM_EXECUTION_AND_PIPELINE_GUIDE.md)** - Multi-platform guide on how to build, run, and infer using the automated `Makefile` pipeline.
+- 🔄 **[Pipeline vs. Notebooks Architecture](docs/PIPELINE_VS_NOTEBOOKS_ARCHITECTURE.md)** - An explanation of why the system transitioned from static notebooks to an enterprise decoupled Python pipeline.
+- 📊 **[MLflow Tracking Guide](docs/MLFLOW_GUIDE.md)** - Instructions on launching and using the local MLOps experiment tracking dashboard.
+
+---
+
 ## 🏆 Kaggle Competition Overview
 
 - **Competition**: [Kaggle Playground Series s6e7: Predicting Student Health Risk](https://kaggle.com/competitions/playground-series-s6e7)
