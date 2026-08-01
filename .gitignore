@@ -1,0 +1,36 @@
+# Python & Environments
+.venv/
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+
+# Data & Models (Avoid pushing large datasets and binaries to GitHub)
+Pipeline/data/processed/
+Pipeline/artifacts/models/
+Pipeline/artifacts/preprocessor/
+*.csv
+*.joblib
+*.pkl
+*.npy
+*.h5
+*.onnx
+
+# MLflow Tracking Data
+mlruns/
+*.db
+
+# Output & Submission files
+outputs/
+Kaggle_Submission/*.csv
+
+# IDEs & OS Files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
