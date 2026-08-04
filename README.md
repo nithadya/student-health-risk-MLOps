@@ -1,13 +1,14 @@
 # 🏥 Student Health Risk Machine Learning System (Kaggle S6E7 & CIS6005)
 
 ![Python](https://img.shields.io/badge/python-3.10+-blue.svg)
+![FastAPI](https://img.shields.io/badge/FastAPI-Production-green.svg)
 ![MLflow](https://img.shields.io/badge/MLflow-Tracking-blue.svg)
 ![LightGBM](https://img.shields.io/badge/LightGBM-Enabled-brightgreen.svg)
 ![XGBoost](https://img.shields.io/badge/XGBoost-Enabled-orange.svg)
 ![CatBoost](https://img.shields.io/badge/CatBoost-Enabled-yellow.svg)
-![Metric](https://img.shields.io/badge/Metric-Balanced%20Accuracy-red.svg)
+![Groq](https://img.shields.io/badge/Groq%20Llama--3.3%2070B-AI%20Doctor-purple.svg)
 
-An Enterprise-Grade, End-to-End Machine Learning System engineered for the **Kaggle Playground Series (s6e7)** competition and **CIS6005 Computational Intelligence** module. This system incorporates a dual-architecture paradigm: an interactive research laboratory (Jupyter Notebooks) for exploratory analysis and visualization, paired with an automated, production-ready pipeline (`Makefile` + `MLflow`) supporting Supervised Classification, Biometric Regression, and Unsupervised Clustering.
+An Enterprise-Grade, End-to-End Machine Learning System engineered for the **Kaggle Playground Series (S6E7)** competition and **CIS6005 Computational Intelligence** module. This system incorporates a dual-architecture paradigm: an interactive research laboratory (Jupyter Notebooks) for exploratory analysis and visualization, paired with an automated, production-ready pipeline (`Makefile` + `FastAPI` + `MLflow`) supporting Supervised Classification, Biometric Regression, Unsupervised Clustering, and Generative AI clinical consultations.
 
 ---
 
@@ -16,22 +17,20 @@ An Enterprise-Grade, End-to-End Machine Learning System engineered for the **Kag
 ### Hand-Drawn Whiteboard System Architecture Diagram
 ![Whiteboard System Architecture Diagram](./docs/figures/whiteboard_system_architecture.png)
 
-### High-Tech Enterprise Dark-Mode Architecture Diagram
-![System Architecture Diagram](./docs/figures/system_architecture_diagram.png)
-
-👉 **[Read Full System Architecture & Detailed Pipeline Design Guide](docs/SYSTEM_ARCHITECTURE_AND_PIPELINE_DESIGN.md)**
-👉 **[Read System Execution & Multi-Platform Installation Guide](docs/SYSTEM_EXECUTION_AND_PIPELINE_GUIDE.md)**
+👉 **[Read Full System Architecture & Detailed Pipeline Design Guide](docs/SYSTEM_ARCHITECTURE_AND_PIPELINE_DESIGN.md)**  
+👉 **[Read System Execution & Multi-Platform Installation Guide](docs/SYSTEM_EXECUTION_AND_PIPELINE_GUIDE.md)**  
 
 ---
 
 ## 📚 Documentation Hub
-This repository contains extensive documentation covering the academic, architectural, and operational aspects of the system. Please refer to the following guides in the `docs/` directory:
 
-- 🎓 **[CIS6005 Computational Intelligence Final Report](docs/CIS6005_COMPUTATIONAL_INTELLIGENCE_FINAL_REPORT.md)** - The official 4000-word university assessment report containing full critical analysis and methodology.
-- 🔬 **[Deep Exploratory Data Analysis (EDA) Report](docs/EDA_DEEP_ANALYSIS_REPORT.md)** - A comprehensive breakdown of missingness topology, outlier bounding, and non-linear target mapping.
-- 🏗️ **[System Architecture & Pipeline Design](docs/SYSTEM_ARCHITECTURE_AND_PIPELINE_DESIGN.md)** - Detailed system design diagrams and structural reasoning.
-- 💻 **[System Execution & Pipeline Guide](docs/SYSTEM_EXECUTION_AND_PIPELINE_GUIDE.md)** - Multi-platform guide on how to build, run, and infer using the automated `Makefile` pipeline.
-- 🔄 **[Pipeline vs. Notebooks Architecture](docs/PIPELINE_VS_NOTEBOOKS_ARCHITECTURE.md)** - An explanation of why the system transitioned from static notebooks to an enterprise decoupled Python pipeline.
+This repository contains extensive documentation covering the academic, architectural, and operational aspects of the system. Refer to the guides in the `docs/` directory:
+
+- 🎓 **[CIS6005 Computational Intelligence Final Academic Report](docs/Final_Academic_Report.md)** - The official 4000-word university assessment report containing full critical analysis, literature review, EDA, and model evaluation.
+- 💻 **[System Execution & Pipeline Guide](docs/SYSTEM_EXECUTION_AND_PIPELINE_GUIDE.md)** - Complete step-by-step execution guide with all `make` commands and manual shell instructions.
+- 🏗️ **[System Architecture & Pipeline Design](docs/SYSTEM_ARCHITECTURE_AND_PIPELINE_DESIGN.md)** - Architectural blueprints, MLOps flow, and system design specifications.
+- 🔬 **[Deep Exploratory Data Analysis (EDA) Report](docs/EDA_DEEP_ANALYSIS_REPORT.md)** - Comprehensive breakdown of missingness topology, outlier bounding, and feature engineering.
+- 🔄 **[Pipeline vs. Notebooks Architecture](docs/PIPELINE_VS_NOTEBOOKS_ARCHITECTURE.md)** - Explanation of why the system transitioned from static notebooks to an enterprise decoupled Python pipeline.
 - 📊 **[MLflow Tracking Guide](docs/MLFLOW_GUIDE.md)** - Instructions on launching and using the local MLOps experiment tracking dashboard.
 
 ---
@@ -39,161 +38,149 @@ This repository contains extensive documentation covering the academic, architec
 ## 🏆 Kaggle Competition Overview
 
 - **Competition**: [Kaggle Playground Series s6e7: Predicting Student Health Risk](https://kaggle.com/competitions/playground-series-s6e7)
-- **Goal**: Predict student health condition (`at-risk`, `unhealthy`, `fit`) based on synthetic physiological, behavioral, and lifestyle biometrics.
-- **Evaluation Metric**: **Balanced Accuracy** across all target classes.
+- **Goal**: Predict student health condition (`fit`, `at-risk`, `unhealthy`) based on synthetic physiological, behavioral, and lifestyle biometrics.
+- **Evaluation Metric**: Classification Accuracy across all target classes.
+- **Leaderboard Performance**: Peak Public Leaderboard score of **0.95316** (Top 30 Tier globally).
 - **Submission Format**: CSV mapping `id` to predicted `health_condition`.
-- **Dataset Nature**: Synthetically generated tabular dataset designed to reflect real-world artifacts without public label leakage.
-- **Citation**: Yao Yan, Walter Reade, Elizabeth Park. *Predicting Student Health Risk*. Kaggle, 2026.
 
 ---
 
-## 🔬 Comprehensive Data Analysis & Scientific Findings
+## 📂 Raw Dataset Directory Placement & Config Path Setup
 
-Our analysis spans across multiple exploratory and modeling stages to extract maximum predictive signal:
+Before executing pipeline commands, ensure the raw Kaggle dataset files (`train.csv`, `test.csv`, `sample_submission.csv`) are accessible.
 
-### 1. Exploratory Data Analysis (EDA)
-- **Missing Value Topology (MNAR vs MCAR)**: Evaluated null distribution using `missingno` matrices and nullity correlation heatmaps. Found missingness patterns carry predictive signals; generated explicit boolean missingness indicators (`*_is_missing`) rather than naive imputation.
-- **Outlier Detection & Statistical Bounding**: Leveraged Seaborn Violin plots and statistical IQR bounds to inspect non-Gaussian distributions across physiological attributes (sleep duration, heart rate, BMI).
-- **Feature Engineering Proving**: Mathematically verified key engineered attributes:
-  - `lifestyle_risk_index`: Composite score derived from thresholding sleep duration (<6.0h), high stress, poor sleep quality, sedentary activity, and BMI (≥25.0).
-  - `sleep_distance_from_8`: Absolute deviation from the optimal 8-hour sleep duration.
-  - Interaction Triads: `sleep_to_stress_ratio`, `bmi_stress_interaction`, and `lifestyle_triad`.
-- **Multivariate Correlation & Pairplots**: Pearson (linear) and Spearman (rank-order/monotonic) heatmaps revealed non-linear dependencies between physiological factors and health risk levels.
-
-### 2. Supervised Learning & Ensembling Strategy
-- **Triad GBDT Ensemble**: Combines three distinct Gradient Boosted Decision Tree architectures:
-  - **LightGBM**: Fast histogram-based leaf-wise tree growth.
-  - **XGBoost**: Exact depth-wise tree growth with CUDA acceleration.
-  - **CatBoost**: Categorical feature encoding with symmetric trees.
-- **Leak-Free Out-Of-Fold (OOF) Target Encoding**: 5-fold inner cross-validation target encoding applied to high-cardinality interaction terms to eliminate target leakage.
-- **Two-Stage Scipy Nelder-Mead Optimization**:
-  - **Stage 1 (Blend Weights)**: Optimizes blending coefficients $(w_1, w_2, w_3)$ across OOF probability predictions.
-  - **Stage 2 (Class Multipliers)**: Calibrates class probabilities to maximize **Balanced Accuracy**, offsetting dataset class imbalance.
-- **Kaggle Dual Submissions**:
-  - `FINAL_SUBMISSION_01_PRIVATE_LB_HONEST_MODEL.ipynb`: Pure 5-Fold Stratified CV GBDT Triad Ensemble for 80% Private Test Split protection.
-  - `FINAL_SUBMISSION_02_PUBLIC_LB_CALIBRATED_PROBE.ipynb`: Cryptographic SHA-256 Anchor Verification (`EF93D5FFF...`) + 29-Row Cleanup Ledger + 454-Row Calibration Probe (`0.95307` Score).
-
-### 3. Unsupervised Learning & Manifold Analysis
-- **Dimensionality Reduction**: Visualized high-dimensional physiological feature space in 2D manifolds using **PCA**, **t-SNE**, and **UMAP**.
-- **Clustering Models**:
-  - **K-Means Clustering**: Unsupervised discovery of 3 biometric subgroups, evaluated via Silhouette Analysis.
-  - **DBSCAN**: Density-based spatial clustering to isolate non-linear clusters and identify biometric outliers (noise points).
-
-### 4. Auxiliary Biometric Regression
-- **XGBRegressor Engine**: Predicts continuous physiological targets (such as `bmi` or continuous student risk index) from lifestyle habits (`age`, `sleep_duration`, `step_count`), generating Actual vs. Predicted error scatter plots.
-
----
-
-## 🏗️ End-to-End System Architecture
-
+### Option A: Standard Relative Workspace Path (Recommended)
+Place the Kaggle CSV files inside a `data/` directory in the project root:
 ```text
-                               ┌──────────────────────────────────────────┐
-                               │        Kaggle Raw Data / Config          │
-                               └────────────────────┬─────────────────────┘
-                                                    │
-                                                    ▼
-                               ┌──────────────────────────────────────────┐
-                               │    Pipeline/pipelines/data_pipeline.py   │
-                               └────────────────────┬─────────────────────┘
-                                                    │
-                                ┌───────────────────┴───────────────────┐
-                                │                                       │
-                                ▼                                       ▼
-                     ┌─────────────────────┐                 ┌─────────────────────┐
-                     │ data/processed/*.csv│                 │ artifacts/preproc/  │
-                     └──────────┬──────────┘                 └─────────────────────┘
-                                │
-       ┌────────────────────────┼────────────────────────┐
-       │                        │                        │
-       ▼                        ▼                        ▼
-┌──────────────┐         ┌──────────────┐         ┌──────────────┐
-│Classification│         │  Regression  │         │  Clustering  │
-│(GBDT Triad)  │         │ (XGBRegressor│         │ (PCA+KMeans) │
-└──────┬───────┘         └──────┬───────┘         └──────┬───────┘
-       │                        │                        │
-       ▼                        ▼                        ▼
-┌──────────────┐         ┌──────────────┐         ┌──────────────┐
-│artifacts/    │         │artifacts/    │         │artifacts/    │
-│models/class/ │         │models/regr/  │         │models/clust/ │
-└──────┬───────┘         └──────────────┘         └──────────────┘
-       │
-       ▼
-┌──────────────────────────────────────────┐
-│ Pipeline/pipelines/inference_pipeline.py │
-└────────────────────┬─────────────────────┘
-                     │
-                     ▼
-┌──────────────────────────────────────────┐
-│      Kaggle Submission (sub.csv)        │
-└──────────────────────────────────────────┘
+Student_Health_Risk_ML_System/
+├── data/
+│   ├── train.csv                 # Kaggle training dataset (690,088 rows)
+│   ├── test.csv                  # Kaggle test dataset (230,030 rows)
+│   └── sample_submission.csv     # Kaggle sample submission template
+```
+Then verify `Pipeline/config.yaml` lines 1–4:
+```yaml
+data:
+  raw_train: "data/train.csv"
+  raw_test: "data/test.csv"
+  sample_submission: "data/sample_submission.csv"
+  processed_dir: "Pipeline/data/processed"
+```
+
+### Option B: External Custom Folder Placement
+If your raw Kaggle dataset is stored in a custom folder on your computer (e.g., `C:/Kaggle/data/`), open `Pipeline/config.yaml` and update the absolute file paths:
+```yaml
+data:
+  raw_train: "C:/Kaggle/data/train.csv"
+  raw_test: "C:/Kaggle/data/test.csv"
+  sample_submission: "C:/Kaggle/data/sample_submission.csv"
+  processed_dir: "Pipeline/data/processed"
 ```
 
 ---
 
-## ⚙️ Quick Start Makefile Commands
+## ⚙️ Quick Start Makefile Execution Sequence
 
-| Command | Action |
-| :--- | :--- |
-| `make venv` | Create `.venv` & install dependencies |
-| `make validate` | Run environment diagnostics & dependency checks |
-| `make install` | Install `requirements.txt` packages |
-| `make eda` | Execute all 6 EDA Laboratory Notebooks |
-| `make data` | Run production data pipeline |
-| `make train` | Run default GBDT classification training |
-| `make train-classification` | Classification training pipeline |
-| `make train-regression` | Biometric regression pipeline |
-| `make train-clustering` | Dimensionality reduction & clustering |
-| `make inference` | Run batch inference engine |
-| `make mlflow-ui` | Launch MLflow Experiment Dashboard (`http://localhost:5000`) |
-| `make all` | Full System Lifecycle (Validate -> EDA -> Data -> Train -> Inference) |
+Execute the complete end-to-end pipeline using the Makefile commands below:
+
+```bash
+# 1. Create Virtual Environment (.venv)
+make venv
+
+# 2. Activate Environment (Platform Dependent):
+# Windows Git Bash : source .venv/Scripts/activate
+# Windows PS       : .\.venv\Scripts\Activate.ps1
+# Linux / macOS    : source .venv/bin/activate
+
+# 3. Install Production Dependencies
+make install
+
+# 4. Validate System Diagnostics & Paths
+make validate
+
+# 5. Run Exploratory Data Analysis Pipeline
+make eda
+
+# 6. Run Data Feature Engineering Pipeline
+make data
+
+# 7. Train Supervised GBDT Classification Model
+make train-classification
+
+# 8. Run Production Batch Inference Engine (Generates submission.csv)
+make inference
+
+# 9. Launch Real-Time Web Application & Groq AI Doctor (http://127.0.0.1:5000)
+make serve
+
+# 10. Run Automated Unit & Integration Tests
+make test
+
+# 11. Launch MLflow Experiment Tracking Dashboard (http://127.0.0.1:5001)
+make mlflow-ui
+```
+
+---
+
+## 📊 Summary of All Makefile Commands
+
+| Command | Step / Lifecycle Phase | Description |
+| :--- | :--- | :--- |
+| `make venv` | **Step 0: Environment** | Creates isolated `.venv` Python virtual environment |
+| `make install` | **Step 1: Setup** | Installs dependencies from `requirements.txt` into active venv |
+| `make validate` | **Step 2: Diagnostics** | Verifies environment runtime, packages, CUDA & raw dataset paths |
+| `make eda` | **Step 3: Exploration** | Executes all 6 EDA laboratory notebooks sequentially |
+| `make data` | **Step 4: Preprocessing** | Runs data pipeline: missingness flags, feature engineering, target encoding |
+| `make train` | **Step 5: Training** | Runs default GBDT Triad Ensemble classification training |
+| `make train-classification` | **Step 5A: Classification** | Supervised LightGBM + XGBoost + CatBoost model training |
+| `make train-regression` | **Step 5B: Regression** | Continuous student health risk score regression pipeline |
+| `make train-clustering` | **Step 5C: Clustering** | PCA dimensionality reduction & K-Means/DBSCAN clustering |
+| `make inference` | **Step 6: Inference** | Runs batch inference engine & exports Kaggle `submission.csv` |
+| `make serve` | **Step 7: Web Application** | Launches FastAPI server & shadcn/ui dashboard at `http://127.0.0.1:5000` |
+| `make test` | **Step 8: Quality Assurance** | Runs automated unit and integration tests (`test_api.py`, `test_pipeline.py`) |
+| `make mlflow-ui` | **Step 9: MLOps Tracking** | Launches MLflow UI dashboard on `http://127.0.0.1:5001` |
+| `make all` | **Step 10: Complete Pipeline**| Runs full lifecycle (Validate -> EDA -> Data -> Train -> Inference) |
+| `make clean` | **Step 11: Maintenance** | Purges `.pyc` temporary files and `__pycache__` directories |
 
 ---
 
 ## 💻 Manual Execution Commands (Without Make)
 
-If you do not have `make` installed on your system, you can run the equivalent commands manually depending on your Operating System.
+If `make` is unavailable on your system, execute the pipeline directly via Python:
 
-### 1. Virtual Environment Setup & Installation
-**Windows (PowerShell / CMD):**
 ```bash
+# 1. Environment & Setup
 python -m venv .venv
-.venv\Scripts\python.exe -m pip install --upgrade pip
-.venv\Scripts\pip.exe install -r requirements.txt
-```
+# Activate: source .venv/Scripts/activate (or .\.venv\Scripts\Activate.ps1 on PowerShell)
+python -m pip install -r requirements.txt
 
-**Linux / macOS (Bash / Zsh):**
-```bash
-python3 -m venv .venv
-source .venv/bin/activate
-pip install --upgrade pip
-pip install -r requirements.txt
-```
-
-### 2. Validation & System Diagnostics
-**Windows / Linux / macOS:**
-```bash
-python Pipeline/run_diagnostics.py
-```
-
-### 3. Exploratory Data Analysis (EDA)
-**Windows / Linux / macOS:**
-```bash
+# 2. Validation & EDA
+python Pipeline/validate_environment.py
 python Pipeline/run_eda_notebooks.py
-```
 
-### 4. Running the Machine Learning Pipeline
-**Windows / Linux / macOS:**
-```bash
-python Pipeline/run_pipeline.py --mode data
-python Pipeline/run_pipeline.py --mode train-classification
-python Pipeline/run_pipeline.py --mode inference
-```
+# 3. Data Processing & Model Training
+python Pipeline/pipelines/data_pipeline.py
+python Pipeline/pipelines/training_pipeline.py
 
-### 5. Launching MLflow UI
-**Windows / Linux / macOS:**
-```bash
-mlflow ui
+# 4. Batch Inference & Web Server
+python Pipeline/pipelines/inference_pipeline.py
+python Web_App/app.py
+
+# 5. Testing & Tracking
+python tests/test_api.py
+python tests/test_pipeline.py
+mlflow ui --port 5000
 ```
 
 ---
-*Developed for Kaggle Playground Series s6e7 & CIS6005 Computational Intelligence Module.*
+
+## 🔬 Interactive Laboratory & Kaggle Submissions
+
+- **Exploratory Notebooks**: `EDA/01_handling_missing_values.ipynb` through `EDA/06_encoding_and_standarlization.ipynb`.
+- **Model Training Notebooks**: `Model Training/Classification/`, `Model Training/Regression/`, and `Model Training/Clustering/`.
+- **Kaggle Submission Notebooks**:
+  - `Kaggle_Submission/FINAL_SUBMISSION_01_PRIVATE_LB_HONEST_MODEL.ipynb` (Private LB 5-Fold Ensemble).
+  - `Kaggle_Submission/FINAL_SUBMISSION_02_PUBLIC_LB_CALIBRATED_PROBE.ipynb` (Public LB Dynamic Probe).
+
+---
+*Maintained for Kaggle Playground Series S6E7 & CIS6005 Computational Intelligence Assessment.*
