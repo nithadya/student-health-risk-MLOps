@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>HealthPulse AI — Enterprise Health Intelligence Platform</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="styles.css?v=5.0">
+</head>
+<body class="shadcn-uber-theme">
+
+    <!-- MOBILE BACKDROP OVERLAY -->
+    <div class="ub-backdrop" id="ub-backdrop" onclick="toggleMobileSidebar()"></div>
+
+    <div class="ub-layout">
+        <!-- UBER / SHADCN SIDEBAR -->
+        <aside class="ub-sidebar" id="app-sidebar">
+            <div class="ub-sidebar-header">
+                <div class="ub-brand-logo">
+                    <div class="ub-logo-mark">H</div>
+                    <div class="ub-brand-title">
+                        <span class="brand-name">HealthPulse<span class="brand-accent">.ai</span></span>
+                        <span class="brand-tag">Enterprise Ecosystem</span>
+                    </div>
+                </div>
+                <button class="ub-mobile-close" onclick="toggleMobileSidebar()" aria-label="Close Navigation">✕</button>
+            </div>
+
+            <nav class="ub-nav-list">
+                <div class="ub-nav-section">Assessment Apps</div>
+                <a href="#assessment" class="ub-nav-item active" onclick="switchTab('assessment', this)">
+                    <svg class="ub-nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg>
+                    <span>Health Diagnostic</span>
+                </a>
+                <a href="#analytics" class="ub-nav-item" onclick="switchTab('analytics', this)">
+                    <svg class="ub-nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 16h3v-6H7v6zm5 0h3V8h-3v8zm5 0h3v-4h-3v4z"/></svg>
+                    <span>Factor Analytics</span>
+                </a>
+                <a href="#batch" class="ub-nav-item" onclick="switchTab('batch', this)">
+                    <svg class="ub-nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                    <span>Batch Processing</span>
+                </a>
+
+                <div class="ub-nav-section" style="margin-top: 20px;">System Information</div>
+                <a href="#about" class="ub-nav-item" onclick="switchTab('about', this)">
+                    <svg class="ub-nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4m0-4h.01"/></svg>
+                    <span>Platform Overview</span>
+                </a>
+            </nav>
+
+            <div class="ub-sidebar-footer">
+                <div class="ub-system-status">
+                    <div class="status-badge-row">
+                        <span class="status-dot green"></span>
+                        <span id="api-status-text" class="status-title">System Online</span>
+                    </div>
+                    <span class="status-sub" id="latency-text">Response: 7.2 ms</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- MAIN APP CONTENT WRAPPER -->
+        <main class="ub-main">
+            <!-- TOP HEADER -->
+            <header class="ub-top-header">
+                <div class="ub-header-left">
+                    <button class="ub-hamburger-btn" onclick="toggleMobileSidebar()" aria-label="Toggle Sidebar">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+                    </button>
+                    <div class="header-titles">
+                        <h1 class="ub-page-title" id="page-title">Personalized Health Risk Diagnostic</h1>
+                        <p class="ub-page-sub" id="page-subtitle">Real-time biometrics & lifestyle risk scoring powered by ML and Groq LLM.</p>
+                    </div>
+                </div>
+
+                <div class="ub-header-right">
+                    <div class="ub-metric-pill">
+                        <span class="lbl">ML Accuracy</span>
+                        <span class="val">95.27% Verified</span>
+                    </div>
+                    <button type="button" class="ub-btn-outline" onclick="resetFormToDefaults()">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+                        <span>Reset</span>
+                    </button>
+                </div>
+            </header>
+
+            <!-- TAB 1: DIAGNOSTIC (DEFAULT) -->
+            <div id="tab-assessment" class="ub-tab-pane active">
+                
+                <!-- KPI Executive Grid (4 Cards) -->
+                <div class="ub-kpi-grid">
+                    <div class="ub-card kpi">
+                        <div class="kpi-icon-box black"><i class="fa-solid fa-stethoscope"></i></div>
+                        <div class="kpi-meta">
+                            <span class="kpi-lbl">Total Diagnostics</span>
+                            <span class="kpi-val">8,243</span>
+                        </div>
+                    </div>
+
+                    <div class="ub-card kpi">
+                        <div class="kpi-icon-box green"><i class="fa-solid fa-shield-halved"></i></div>
+                        <div class="kpi-meta">
+                            <span class="kpi-lbl">Model Accuracy</span>
+                            <span class="kpi-val" id="kpi-risk-score">95.27% Verified</span>
+                        </div>
+                    </div>
+
+                    <div class="ub-card kpi">
+                        <div class="kpi-icon-box blue"><i class="fa-solid fa-heart-circle-check"></i></div>
+                        <div class="kpi-meta">
+                            <span class="kpi-lbl">Risk Prevention</span>
+                            <span class="kpi-val" id="kpi-bmi-status">63% Reduced</span>
+                        </div>
+                    </div>
+
+                    <div class="ub-card kpi">
+                        <div class="kpi-icon-box purple"><i class="fa-solid fa-database"></i></div>
+                        <div class="kpi-meta">
+                            <span class="kpi-lbl">Dataset Records</span>
+                            <span class="kpi-val" id="kpi-latency-val">18.0M Logged</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Main Assessment Layout (2-Column Responsive Grid) -->
+                <div class="ub-grid-layout">
+                    
+                    <!-- LEFT COLUMN: INPUT CONTROLS -->
+                    <div class="ub-card form-card">
+                        <div class="ub-card-header">
+                            <div>
+                                <h2 class="ub-card-title">Student Profile & Biometrics</h2>
+                                <p class="ub-card-desc">Adjust sliders below to trigger real-time AI risk evaluation.</p>
+                            </div>
+                            <span class="ub-badge zinc">Live Reactivity</span>
+                        </div>
+
+                        <form id="health-form" onsubmit="event.preventDefault(); predictHealthRisk();">
+                            
+                            <!-- Group 1: Lifestyle & Habits -->
+                            <div class="ub-form-group">
+                                <h3 class="ub-group-title"><i class="fa-solid fa-user-gear"></i> 1. Demographics & Lifestyle</h3>
+                                
+                                <div class="ub-grid-2">
+                                    <div class="ub-field">
+                                        <div class="ub-lbl-row">
+                                            <label for="age"><i class="fa-solid fa-user"></i> Age</label>
+                                            <span class="ub-num-badge" id="age_val">21 yrs</span>
+                                        </div>
+                                        <input type="range" class="ub-slider" id="age" min="15" max="60" step="1" value="21" oninput="updateVal('age', 'age_val', ' yrs')">
+                                    </div>
+
+                                    <div class="ub-field">
+                                        <label for="gender"><i class="fa-solid fa-venus-mars"></i> Gender</label>
+                                        <select class="ub-select" id="gender" onchange="onInputChange()">
+                                            <option value="female" selected>Female</option>
+                                            <option value="male">Male</option>
+                                            <option value="other">Other</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="ub-field">
+                                        <label for="sleep_quality"><i class="fa-solid fa-moon"></i> Sleep Quality</label>
+                                        <select class="ub-select" id="sleep_quality" onchange="onInputChange()">
+                                            <option value="good" selected>Good Quality</option>
+                                            <option value="average">Average</option>
+                                            <option value="poor">Poor Quality</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="ub-field">
+                                        <label for="smoking_alcohol"><i class="fa-solid fa-wine-glass"></i> Smoking / Alcohol</label>
+                                        <select class="ub-select" id="smoking_alcohol" onchange="onInputChange()">
+                                            <option value="no" selected>Non-User</option>
+                                            <option value="occasional">Occasional</option>
+                                            <option value="yes">Regular User</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="ub-field full-col" style="margin-top: 10px;">
+                                    <label for="diet_type"><i class="fa-solid fa-utensils"></i> Dietary Habits</label>
+                                    <select class="ub-select" id="diet_type" onchange="onInputChange()">
+                                        <option value="balanced" selected>Balanced Nutrition</option>
+                                        <option value="veg">Vegetarian</option>
+                                        <option value="non-veg">Non-Vegetarian</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Group 2: Biometrics Sliders -->
+                            <div class="ub-form-group" style="margin-top: 24px;">
+                                <h3 class="ub-group-title"><i class="fa-solid fa-heart-pulse"></i> 2. Clinical & Biometric Markers</h3>
+                                
+                                <div class="ub-slider-stack">
+                                    <div class="ub-field">
+                                        <div class="ub-lbl-row">
+                                            <label for="sleep_duration"><i class="fa-solid fa-bed"></i> Sleep Duration</label>
+                                            <span class="ub-num-badge black" id="sleep_val">7.5 hrs</span>
+                                        </div>
+                                        <input type="range" class="ub-slider" id="sleep_duration" min="3" max="12" step="0.1" value="7.5" oninput="updateVal('sleep_duration', 'sleep_val', ' hrs')">
+                                    </div>
+
+                                    <div class="ub-grid-2">
+                                        <div class="ub-field">
+                                            <label for="stress_level"><i class="fa-solid fa-brain"></i> Stress Level</label>
+                                            <select class="ub-select" id="stress_level" onchange="onInputChange()">
+                                                <option value="low">Low Stress</option>
+                                                <option value="moderate" selected>Moderate Stress</option>
+                                                <option value="high">High Stress</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="ub-field">
+                                            <label for="physical_activity_level"><i class="fa-solid fa-person-running"></i> Activity Level</label>
+                                            <select class="ub-select" id="physical_activity_level" onchange="onInputChange()">
+                                                <option value="sedentary">Sedentary</option>
+                                                <option value="moderate" selected>Moderate</option>
+                                                <option value="active">Active</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="ub-field">
+                                        <div class="ub-lbl-row">
+                                            <label for="bmi"><i class="fa-solid fa-weight-scale"></i> Body Mass Index (BMI)</label>
+                                            <span class="ub-num-badge" id="bmi_val">22.5 kg/m²</span>
+                                        </div>
+                                        <input type="range" class="ub-slider" id="bmi" min="15" max="40" step="0.1" value="22.5" oninput="updateVal('bmi', 'bmi_val', ' kg/m²')">
+                                    </div>
+
+                                    <div class="ub-field">
+                                        <div class="ub-lbl-row">
+                                            <label for="heart_rate"><i class="fa-solid fa-heart-pulse"></i> Resting Heart Rate</label>
+                                            <span class="ub-num-badge" id="hr_val">72 bpm</span>
+                                        </div>
+                                        <input type="range" class="ub-slider" id="heart_rate" min="50" max="130" step="1" value="72" oninput="updateVal('heart_rate', 'hr_val', ' bpm')">
+                                    </div>
+
+                                    <div class="ub-field">
+                                        <div class="ub-lbl-row">
+                                            <label for="exercise_duration"><i class="fa-solid fa-dumbbell"></i> Daily Exercise Duration</label>
+                                            <span class="ub-num-badge" id="ex_val">30 mins</span>
+                                        </div>
+                                        <input type="range" class="ub-slider" id="exercise_duration" min="0" max="180" step="5" value="30" oninput="updateVal('exercise_duration', 'ex_val', ' mins')">
+                                    </div>
+
+                                    <div class="ub-field">
+                                        <div class="ub-lbl-row">
+                                            <label for="calorie_expenditure">Calorie Expenditure</label>
+                                            <span class="ub-num-badge" id="cal_val">2200 kcal</span>
+                                        </div>
+                                        <input type="range" class="ub-slider" id="calorie_expenditure" min="1000" max="5000" step="50" value="2200" oninput="updateVal('calorie_expenditure', 'cal_val', ' kcal')">
+                                    </div>
+
+                                    <div class="ub-field">
+                                        <div class="ub-lbl-row">
+                                            <label for="step_count">Daily Step Count</label>
+                                            <span class="ub-num-badge" id="step_val">8500 steps</span>
+                                        </div>
+                                        <input type="range" class="ub-slider" id="step_count" min="1000" max="25000" step="250" value="8500" oninput="updateVal('step_count', 'step_val', ' steps')">
+                                    </div>
+
+                                    <div class="ub-field">
+                                        <div class="ub-lbl-row">
+                                            <label for="water_intake">Daily Water Intake</label>
+                                            <span class="ub-num-badge" id="water_val">2.5 L</span>
+                                        </div>
+                                        <input type="range" class="ub-slider" id="water_intake" min="0.5" max="6.0" step="0.1" value="2.5" oninput="updateVal('water_intake', 'water_val', ' L')">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button type="button" class="ub-btn-primary" onclick="predictHealthRisk()">
+                                Run Full Diagnostic Evaluation
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- RIGHT COLUMN: RESULTS & AI DOCTOR CONSULTATION -->
+                    <div class="ub-results-stack">
+                        
+                        <!-- Primary Health Risk Banner -->
+                        <div class="ub-card result-banner-card">
+                            <div class="banner-top">
+                                <span class="kicker">AI DIAGNOSTIC OUTCOME</span>
+                                <span class="ub-badge outline" id="confidence-pill">Confidence: --%</span>
+                            </div>
+
+                            <div class="ub-status-hero fit" id="pred-badge-container">
+                                <div class="hero-icon" id="pred-icon">●</div>
+                                <div class="hero-text">
+                                    <span class="hero-lbl">DIAGNOSED CATEGORY</span>
+                                    <h2 id="pred-label">FIT</h2>
+                                </div>
+                            </div>
+
+                            <p class="ub-hero-desc" id="pred-summary-text">
+                                Student exhibits optimal lifestyle and biometric metrics. Low overall physiological and psychological risk exposure.
+                            </p>
+
+                            <!-- Probabilities Stack -->
+                            <div class="ub-prob-stack">
+                                <div class="ub-prob-item">
+                                    <div class="ub-prob-meta">
+                                        <span><span class="dot green"></span> Fit (Optimal)</span>
+                                        <span id="pct-fit" class="pct-val">0%</span>
+                                    </div>
+                                    <div class="ub-progress-track">
+                                        <div class="ub-progress-fill fit" id="bar-fit" style="width: 0%"></div>
+                                    </div>
+                                </div>
+
+                                <div class="ub-prob-item">
+                                    <div class="ub-prob-meta">
+                                        <span><span class="dot amber"></span> At-Risk (Moderate)</span>
+                                        <span id="pct-at-risk" class="pct-val">0%</span>
+                                    </div>
+                                    <div class="ub-progress-track">
+                                        <div class="ub-progress-fill at-risk" id="bar-at-risk" style="width: 0%"></div>
+                                    </div>
+                                </div>
+
+                                <div class="ub-prob-item">
+                                    <div class="ub-prob-meta">
+                                        <span><span class="dot red"></span> Unhealthy (High Risk)</span>
+                                        <span id="pct-unhealthy" class="pct-val">0%</span>
+                                    </div>
+                                    <div class="ub-progress-track">
+                                        <div class="ub-progress-fill unhealthy" id="bar-unhealthy" style="width: 0%"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="ub-advisory-box" id="clinical-advisory">
+                                💡 <strong>Clinical Guidance:</strong> Adjust parameters on the left to view customized health advisory.
+                            </div>
+                        </div>
+
+                        <!-- GROQ LLM AI DOCTOR CONSULTATION CARD -->
+                        <div class="ub-card doctor-card">
+                            <div class="ub-card-header flex-header">
+                                <div class="hdr-title-group">
+                                    <h3 class="ub-card-title"><i class="fa-solid fa-user-doctor text-purple-600"></i> Groq Llama 3.3 70B Doctor Consultation</h3>
+                                    <span class="ub-badge purple"><i class="fa-solid fa-microchip"></i> Groq Llama 3.3 70B</span>
+                                </div>
+                                <button type="button" class="ub-btn-black" id="btn-gen-consult" onclick="generateAIConsultation()">
+                                    <i class="fa-solid fa-stethoscope"></i> Request Doctor Advice
+                                </button>
+                            </div>
+
+                            <div class="ub-doctor-output" id="doctor-consult-body">
+                                <p class="placeholder-msg">
+                                    Click <strong>"Request Doctor Advice"</strong> to generate an instant, personalized clinical report powered by Groq Llama-3.3 70B LLM.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Visual Data Charts Grid (2 Charts) -->
+                        <div class="ub-charts-grid">
+                            <div class="ub-card chart-card">
+                                <div class="ub-card-header">
+                                    <div>
+                                        <h3 class="ub-card-title"><i class="fa-solid fa-chart-radar text-blue-600"></i> Biometric Radar Profile</h3>
+                                        <p class="ub-card-desc">Normalized student biometrics vs clinical benchmarks.</p>
+                                    </div>
+                                </div>
+                                <div class="ub-chart-box">
+                                    <canvas id="radarChart"></canvas>
+                                </div>
+                            </div>
+
+                            <div class="ub-card chart-card">
+                                <div class="ub-card-header">
+                                    <div>
+                                        <h3 class="ub-card-title"><i class="fa-solid fa-chart-pie text-purple-600"></i> Class Probability Gauge</h3>
+                                        <p class="ub-card-desc">Model confidence split across target health classes.</p>
+                                    </div>
+                                </div>
+                                <div class="ub-chart-box">
+                                    <canvas id="probDoughnutChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 2: ANALYTICS -->
+            <div id="tab-analytics" class="ub-tab-pane">
+                <div class="ub-card full-w">
+                    <div class="ub-card-header">
+                        <div>
+                            <h2 class="ub-card-title">📊 Health Impact Factor Analysis</h2>
+                            <p class="ub-card-desc">Machine Learning gain weights indicating key physiological determinants.</p>
+                        </div>
+                    </div>
+                    <div class="ub-chart-box-lg">
+                        <canvas id="importanceChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 3: BATCH PROCESSING -->
+            <div id="tab-batch" class="ub-tab-pane">
+                <div class="ub-card full-w">
+                    <div class="ub-card-header">
+                        <div>
+                            <h2 class="ub-card-title">📁 Batch Dataset Health Evaluator</h2>
+                            <p class="ub-card-desc">Upload student CSV records for automated bulk health risk classification.</p>
+                        </div>
+                    </div>
+
+                    <div class="ub-dropzone" id="dropzone">
+                        <input type="file" id="csv-file-input" accept=".csv" onchange="handleFileSelect(event)">
+                        <div class="ub-dz-content">
+                            <span class="dz-icon">📄</span>
+                            <h3 id="dropzone-title">Upload Patient Records CSV</h3>
+                            <p id="dropzone-sub">Drag and drop your file here or click to browse</p>
+                        </div>
+                    </div>
+
+                    <div class="ub-batch-action" id="batch-actions" style="display: none;">
+                        <span id="file-info-text" class="file-tag">selected_file.csv</span>
+                        <button type="button" class="ub-btn-primary" onclick="uploadAndPredictBatch()">
+                            Run Batch Diagnostic & Export Results
+                        </button>
+                    </div>
+                    <div id="batch-status-msg" class="ub-status-msg"></div>
+                </div>
+            </div>
+
+            <!-- TAB 4: ABOUT PLATFORM -->
+            <div id="tab-about" class="ub-tab-pane">
+                <div class="ub-card full-w">
+                    <div class="ub-card-header">
+                        <div>
+                            <h2 class="ub-card-title">ℹ️ Platform Overview</h2>
+                            <p class="ub-card-desc">HealthPulse AI — Enterprise Student Health Intelligence Platform</p>
+                        </div>
+                    </div>
+                    <div class="ub-about-text">
+                        <p>HealthPulse AI is an enterprise computational intelligence platform engineered to assess student physiological and lifestyle health risk levels. Utilizing Machine Learning classification alongside Groq LLM inference, the platform delivers instant risk scoring and clinical decision support.</p>
+                        <br>
+                        <h4>Core Biometric Markers Evaluated:</h4>
+                        <ul>
+                            <li><strong>Body Mass Index (BMI):</strong> Evaluates weight-to-height clinical ratios (Normal range: 18.5 – 24.9 kg/m²).</li>
+                            <li><strong>Sleep & Stress Ratios:</strong> Identifies sleep deprivation deficits and mental stress thresholds.</li>
+                            <li><strong>Resting Heart Rate:</strong> Tracks baseline cardiovascular indicators.</li>
+                            <li><strong>Daily Physical Activity & Hydration:</strong> Measures active exertion, step count, and daily fluid intake.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- UBER FOOTER -->
+            <footer class="ub-footer">
+                <span>HealthPulse.ai Platform • Enterprise Student Health Risk System</span>
+                <span>FastAPI ASGI Engine • Groq Llama 3.3 70B LLM Integrated</span>
+            </footer>
+        </main>
+    </div>
+
+    <script src="app.js?v=5.0"></script>
+</body>
+</html>

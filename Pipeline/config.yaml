@@ -1,0 +1,90 @@
+data:
+  raw_train: "c:/Users/mihisara/Desktop/ML/data/train.csv"
+  raw_test: "c:/Users/mihisara/Desktop/ML/data/test.csv"
+  sample_submission: "c:/Users/mihisara/Desktop/ML/data/sample_submission.csv"
+  processed_dir: "Pipeline/data/processed"
+
+artifacts:
+  regression_data_dir: "Pipeline/artifacts/data/regression"
+  regression_model_dir: "Pipeline/artifacts/models/regression"
+  clustering_data_dir: "Pipeline/artifacts/data/clustering"
+  clustering_model_dir: "Pipeline/artifacts/models/clustering"
+  classification_data_dir: "Pipeline/artifacts/data/classification"
+  classification_model_dir: "Pipeline/artifacts/models/classification"
+  encoder_dir: "Pipeline/artifacts/encoder"
+
+preprocessing:
+  target_column: "health_condition"
+  id_column: "id"
+  nominal_columns:
+    - "gender"
+    - "stress_level"
+    - "physical_activity_level"
+    - "sleep_quality"
+    - "smoking_alcohol"
+    - "diet_type"
+  numerical_columns:
+    - "age"
+    - "sleep_duration"
+    - "exercise_duration"
+    - "step_count"
+    - "calorie_expenditure"
+    - "heart_rate"
+    - "bmi"
+
+feature_engineering:
+  categorical_combinations:
+    - ["stress_level", "physical_activity_level"]
+    - ["sleep_quality", "stress_level"]
+    - ["stress_level", "physical_activity_level", "sleep_quality"]
+
+model_training:
+  cv: 5
+  seeds: [42, 2026, 999, 777, 3407]
+  
+  lightgbm:
+    n_estimators: 850
+    learning_rate: 0.03
+    num_leaves: 63
+    max_depth: 7
+    min_child_samples: 45
+    subsample: 0.8
+    colsample_bytree: 0.8
+    objective: "multiclass"
+    verbose: -1
+    n_jobs: -1
+    
+  xgboost:
+    n_estimators: 850
+    learning_rate: 0.03
+    max_depth: 6
+    subsample: 0.8
+    colsample_bytree: 0.8
+    objective: "multi:softprob"
+    eval_metric: "mlogloss"
+    enable_categorical: true
+    n_jobs: -1
+    tree_method: "hist"
+    # device: "cuda" # Automatically set if GPU is available
+    
+  catboost:
+    iterations: 850
+    learning_rate: 0.03
+    depth: 6
+    loss_function: "MultiClass"
+    verbose: 0
+
+post_processing:
+  # Base initial weights for blending models
+  initial_blend_weights: [0.15, 0.15, 0.70]
+  
+mlflow:
+  tracking_uri: "file:./mlruns"
+  experiment_name: "Student_Health_Risk_S6E7"
+  model_registry_name: "health_risk_ensemble"
+  run_name_prefix: "triad_ensemble"
+  tags:
+    project: "student_health_risk"
+    team: "ml_engineering"
+    environment: "production"
+  autolog: false  # Using manual detailed logging
