@@ -229,9 +229,9 @@ function updateShadcnUI(data, payload) {
         payload.water_intake
     );
 
-    if (window.probDoughnutChart) {
-        window.probDoughnutChart.data.datasets[0].data = [probs.fit, probs.at_risk, probs.unhealthy];
-        window.probDoughnutChart.update();
+    if (probDoughnutChart && probDoughnutChart.data) {
+        probDoughnutChart.data.datasets[0].data = [probs.fit, probs.at_risk, probs.unhealthy];
+        probDoughnutChart.update();
     }
 }
 
